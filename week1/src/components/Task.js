@@ -7,8 +7,24 @@ import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import { Chip, Stack } from '@mui/material';
 
 const Task = (props) => {
+
+    const getPriorityColor = (priority) => {
+        switch (priority) {
+          case 'Low':
+            return 'green';
+          case 'Medium':
+            return 'orange'; // You can choose your own color
+          case 'High':
+            return 'red';
+          default:
+            return 'gray';
+        }
+      };
+
+      const priorityColor = getPriorityColor(props.priority);
 
     return (
         <Grid
@@ -17,6 +33,8 @@ const Task = (props) => {
       xs={12}
       md={4}
   >
+
+
     <Card sx={{
           backgroundColor: props.done ? 'lightgrey' : 'lightblue',
           padding: '20px'
@@ -44,6 +62,12 @@ const Task = (props) => {
                   Due: {props.deadline}
               </Typography>
               </Box>
+
+              <Stack direction = "row" size = {1} alignItems={"center"} justifyContent={"center"}>
+                <Chip label = {props.priority} size = "small" style={{ backgroundColor: priorityColor, color:"white"}}/>
+                {console.log('Priority in Task component:', props.priority)}
+              </Stack>
+
               <Typography
                   component="p"
                   variant="subtitle1"
@@ -52,6 +76,7 @@ const Task = (props) => {
               >
                   {props.description}
               </Typography>
+
           </CardContent>
           <CardActions sx={{justifyContent: 'space-between', padding: '20px'}}>
               <Button variant="contained" size="small" color="success" onClick={props.markDone}>

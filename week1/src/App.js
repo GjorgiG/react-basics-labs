@@ -11,16 +11,18 @@ import Grid from '@mui/material/Grid';
 function App() {
   const [ taskState, setTaskState ] = useState({
     tasks: [
-      { id: 1, title:"Dishes", description: "Empty dishwasher", deadline: "Today", done: false },
-      { id: 2, title: "Laundry", description: "Fold clothes and put away", deadline: "Tomorrow", done: false },
-      { id: 3, title: "Tidy up", deadline: "Today", done: false}
+      { id: 1, title:"Dishes", description: "Empty dishwasher", deadline: "Today", priority: "Low", done: false },
+      { id: 2, title: "Laundry", description: "Fold clothes and put away", deadline: "Tomorrow", priority: "High", done: false },
+      { id: 3, title: "Tidy up", deadline: "Today", priority: "Medium", done: false}
     ]
   });
   const [ formState, setFormState ] = useState({
     title: "",
     description: "",
-    deadline: ""
+    deadline: "",
+    priority: ""
   });
+
   const doneHandler = (taskIndex) => {
     const tasks = [...taskState.tasks];
     tasks[taskIndex].done = !tasks[taskIndex].done;
@@ -45,9 +47,13 @@ function App() {
       case "deadline":
           form.deadline = event.target.value;
           break;
+      case "priority":
+          form.priority = event.target.value;
+          break;
       default:
           form = formState;
     }
+    console.log('Form priority:', form.priority);
     setFormState(form);
   }
 
@@ -58,6 +64,9 @@ function App() {
     const form = {...formState};
 
     form.id = uuidv4();
+    form.priority = formState.priority;
+
+    console.log('Submit priority:', form.priority);
     
     tasks.push(form);
     setTaskState({tasks});
@@ -97,6 +106,7 @@ function App() {
                 deadline={task.deadline}
                 done={task.done}
                 key={task.id}
+                priority = {task.priority}
                 markDone = {() => doneHandler(index)}
                 deleteTask = {() => deleteHandler(index)}
               />
